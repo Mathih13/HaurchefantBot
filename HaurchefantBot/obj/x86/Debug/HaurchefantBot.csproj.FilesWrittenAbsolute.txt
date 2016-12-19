@@ -1,0 +1,15 @@
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/HaurchefantBot.exe.mdb
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/HaurchefantBot.exe
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/obj/x86/Debug/HaurchefantBot.exe
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/obj/x86/Debug/HaurchefantBot.exe.mdb
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Newtonsoft.Json.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Nito.AsyncEx.Concurrent.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Nito.AsyncEx.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Nito.AsyncEx.Enlightenment.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/RestSharp.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/WebSocket4Net.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Discord.Net.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Discord.Net.Commands.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Discord.Net.Modules.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Debug/Discord.Net.Audio.dll

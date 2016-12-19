@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{14ECF3FD-D1F0-4C71-8B5D-8612DC6CC817}|Default">
+  <MonoDevelop.Ide.ItemProperties.HaurchefantBot PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaurchefantBot/HaurchefantBot.cs">
+    <Files>
+      <File FileName="HaurchefantBot/Program.cs" Line="9" Column="54" />
+      <File FileName="HaurchefantBot/HaurchefantBot.cs" Line="105" Column="9" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
