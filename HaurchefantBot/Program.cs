@@ -6,7 +6,18 @@ namespace HaurchefantBot
 	{
 		public static void Main(string[] args)
 		{
-			HaurchefantBot haurchefant = new HaurchefantBot();
+			Console.WriteLine("Starting HaurchefantBot...");
+			Console.WriteLine("Updating reddit json...");
+
+			JSONHandler handler = new JSONHandler();
+
+
+
+			HaurchefantBot haurchefant = new HaurchefantBot(handler);
+
 		}
+
+
+
 	}
 }

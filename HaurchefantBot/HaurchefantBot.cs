@@ -19,13 +19,12 @@ namespace HaurchefantBot
         DiscordClient client;
 		CommandService commands;
 
-		public HaurchefantBot()
+		public HaurchefantBot(JSONHandler handler)
 		{
-			Console.WriteLine("Starting...");
 
             // TODO: Dictionary this you dumb
 			listOfCommands = new String[] { 
-				"Hello", "How are you?", "You're so beautiful", "Help", "Do you love me?", "Commands"
+				"Hello", "How are you?", "You're so beautiful", "Help", "Do you love me?", "Commands", "dank meme", "update your links"
 			};
 
 			rng = new Random();
@@ -34,7 +33,7 @@ namespace HaurchefantBot
                 "*dabs*",
                 "A knight lives to serve─to aid those in need.",
 				"Ah bloo bloo bloo",
-				"*Cleans WoLs drool off his armor*",
+				"*Cleans WoLs drool off his armor*"
 				
 			};
 
@@ -49,17 +48,28 @@ namespace HaurchefantBot
             futaJokes = new String[] {
                 "Tbh, I wish the Warrior of Light had a feminine penis...",
                 "Mmm, futa.",
-                "Do you guys thing the Warrior of Light has a girlc- nevermind."
+                "Do you guys thing the Warrior of Light has a girlc- nevermind.",
+				"It's not gay if she doesn't have balls",
+				">she",
+				"https://www.youtube.com/watch?v=fRkXSgjd4XQ&feature=youtu.be"
+
             };
 
             sillyStuff = new String[] {
                 "A smile... Better suits... A hero...",
                 "*tiny sad violin*",
-                "I love me some memes",
                 "Hey what about 'We are Number One', but everytime 'one' is played it is replaced with a Final Fantasy cutscene?",
-                "The people who love anime more than real life have it figured out man...",
+                "The people who love anime more than real life have it figured out",
                 "If I was to play Overwatch I think my main would be Lucio",
-                "That Laz guy on youtube makes some pretty funny Overwatch videos"
+                "That Laz guy on youtube makes some pretty funny Overwatch videos",
+				"<:widowmemer:247818678408577024>",
+				"<:barrybee:240215495175831562>",
+				"<:peep:236234509253607425>",
+				"<:toddhoward:247820078916042752>",
+				"Pickles are ruining my life",
+				"I raid you guys",
+				"Tbh, I like face 4 MaleRa..."
+
             };
 
             client = new DiscordClient(x =>
@@ -107,7 +117,7 @@ namespace HaurchefantBot
 							await e.Channel.SendMessage("Fear not, Warrior! The Knight serves you!");
 							await e.Channel.SendMessage(":trident: Haurchefant Bot v1.1 - A Tiny, Undead, Robot Knight :trident:");
                             await e.Channel.SendMessage("Type !Commands for help with commands!");
-                            await e.Channel.SendMessage("What's new: I am a bit smarter now! I will comment on certain topics and keywords when I feel like it.");
+                            await e.Channel.SendMessage("What's new: Expanded vokabulary, decreased my intellect. Lowered risk of turning into SkyNet");
 
                         });
 
@@ -133,6 +143,21 @@ namespace HaurchefantBot
 
                     });
 
+			commands.CreateCommand(listOfCommands[6])
+					.Do(async (e) =>
+					{
+						await e.Channel.SendMessage(handler.GetYouTubeLink());
+
+					});
+
+			commands.CreateCommand(listOfCommands[7])
+					.Do(async (e) =>
+					{
+						await e.Channel.SendMessage("Alright, refreshing my memes!");
+						handler.ResetLinks();
+
+					});
+
 
            
             client.MessageReceived += async (s, e) => {
@@ -155,6 +180,7 @@ namespace HaurchefantBot
                         {
                             var i = rng.Next(0, futaJokes.Length);
                             await e.Channel.SendMessage(futaJokes[i]);
+
                         }
                     }
                 }
