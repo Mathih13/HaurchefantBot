@@ -2,76 +2,49 @@
 using System.IO;
 using Discord;
 using Discord.Commands;
+using System.Collections.Generic;
 
 namespace HaurchefantBot
 {
 	public class HaurchefantBot
 	{
 		Random rng;
-
-		// TODO: Bad database. Go think about what you've done
-		String[] quips;
-		String[] images;
-		String[] listOfCommands;
-        String[] futaJokes;
-        String[] sillyStuff;
-
         DiscordClient client;
 		CommandService commands;
 
-		public HaurchefantBot(JSONHandler handler)
+        Dictionary<String, String> SimpleReply;
+        Dictionary<String, String[]> RandomReply;
+        Dictionary<String, String[]> TriggerWords;
+
+        HaurchefantData data;
+        JSONHandler handler;
+
+        enum randomtype { Text, Image };
+
+        public HaurchefantBot(JSONHandler h)
 		{
+            handler = h;
+            RandomReply = new Dictionary<String, String[]>();
+            SimpleReply = new Dictionary<String, String>();
+            TriggerWords = new Dictionary<String, String[]>();
 
-            // TODO: Dictionary this you dumb
-			listOfCommands = new String[] { 
-				"Hello", "How are you?", "You're so beautiful", "Help", "Do you love me?", "Commands", "dank meme", "update your links"
-			};
+            rng = new Random();
+            data = new HaurchefantData();
 
-			rng = new Random();
-			quips = new String[] { 
-				"Well I'm dead, so there's that...",
-                "*dabs*",
-                "A knight lives to serve─to aid those in need.",
-				"Ah bloo bloo bloo",
-				"*Cleans WoLs drool off his armor*"
-				
-			};
+            /*   listOfCommands = new String[] {
+                  "Hello", "How are you?", "You're so beautiful", "Help", "Do you love me?", "Commands", "dank meme", "update your links"
+              };
+              */
 
-			images = new String[] { 
-				"haurche1.png",
-				"haurche2.jpg",
-				"haurche3.jpg",
-				"haurche4.jpg",
-				"haurche5.png"
-			};
+            RandomReply.Add("How are you?", data.quips);
+            RandomReply.Add("You're so beautiful", data.images);
 
-            futaJokes = new String[] {
-                "Tbh, I wish the Warrior of Light had a feminine penis...",
-                "Mmm, futa.",
-                "Do you guys thing the Warrior of Light has a girlc- nevermind.",
-				"It's not gay if she doesn't have balls",
-				">she",
-				"https://www.youtube.com/watch?v=fRkXSgjd4XQ&feature=youtu.be"
+            SimpleReply.Add("Help", data.helpText);
 
-            };
+            TriggerWords.Add("diablo", data.noDiablo);
+            TriggerWords.Add("futa", data.futaJokes);
 
-            sillyStuff = new String[] {
-                "A smile... Better suits... A hero...",
-                "*tiny sad violin*",
-                "Hey what about 'We are Number One', but everytime 'one' is played it is replaced with a Final Fantasy cutscene?",
-                "The people who love anime more than real life have it figured out",
-                "If I was to play Overwatch I think my main would be Lucio",
-                "That Laz guy on youtube makes some pretty funny Overwatch videos",
-				"<:widowmemer:247818678408577024>",
-				"<:barrybee:240215495175831562>",
-				"<:peep:236234509253607425>",
-				"<:toddhoward:247820078916042752>",
-				"Pickles are ruining my life",
-				"I raid you guys",
-				"Tbh, I like face 4 MaleRa..."
-
-            };
-
+            #region Connection
             client = new DiscordClient(x =>
 			{
 				x.LogLevel = LogSeverity.Info;
@@ -82,120 +55,82 @@ namespace HaurchefantBot
 
 			client.UsingCommands(input =>
 			{
-				input.PrefixChar = '!';
+				
 				input.AllowMentionPrefix = true;
 
 			});
 
 			commands = client.GetService<CommandService>();
+            #endregion
 
 
-			commands.CreateCommand(listOfCommands[0])
-					.Do(async (e) =>
-						{
-							await e.Channel.SendMessage("Hi!");
-						});
+            RegisterMemeCommand("dank meme");
+            RegisterRandomReplyCommand("How are you?", randomtype.Text);
+            RegisterRandomReplyCommand("You're so beautiful", randomtype.Image);
+            RegisterStringCommand("Help");
 
-			commands.CreateCommand(listOfCommands[1])
-					.Do(async (e) =>
-						{
-							var i = rng.Next(0, quips.Length);
-							await e.Channel.SendMessage(quips[i]);
-						});
-
-			commands.CreateCommand(listOfCommands[2])
-					.Do(async (e) => { 
-						var i = rng.Next(0, images.Length);
-						await e.Channel.SendMessage("I know.");
-						await e.Channel.SendFile(Directory.GetCurrentDirectory() + "/images/" + images[i]);
-					});
+            RegisterTriggerMessage("futa", true);
+            RegisterTriggerMessage("diablo");
 
 
-			commands.CreateCommand(listOfCommands[3])
-					.Do(async (e) =>
-						{
-							await e.Channel.SendMessage("Fear not, Warrior! The Knight serves you!");
-							await e.Channel.SendMessage(":trident: Haurchefant Bot v1.1 - A Tiny, Undead, Robot Knight :trident:");
-                            await e.Channel.SendMessage("Type !Commands for help with commands!");
-                            await e.Channel.SendMessage("What's new: Expanded vokabulary, decreased my intellect. Lowered risk of turning into SkyNet");
 
-                        });
-
-			commands.CreateCommand(listOfCommands[4])
-					.Do(async (e) =>
-						{
-							if (e.User.Name == "fujoshit")
-							{
-								await e.Channel.SendMessage("With all my heart, Guy!");
-							}
-							else {
-								await e.Channel.SendMessage("My heart belongs to Guy, " + e.User.Name);
-							}
-
-						});
-
-            commands.CreateCommand(listOfCommands[5])
+            #region Special Commands
+            commands.CreateCommand("Do you love me?")
                     .Do(async (e) =>
                     {
-                        await e.Channel.SendMessage("'Hello' - Say hello to me!");
-                        await e.Channel.SendMessage("'How are you?' - Get me to say funny stuff!");
-                        await e.Channel.SendMessage("'You're so beautiful' - I'll prove it with an image of myself!");
+                        if (e.User.Name == "fujoshit")
+                        {
+                            await e.Channel.SendMessage("With all my heart, Guy!");
+                        }
+                        else {
+                            await e.Channel.SendMessage("My heart belongs to Guy, " + e.User.Name);
+                        }
 
                     });
 
-			commands.CreateCommand(listOfCommands[6])
-					.Do(async (e) =>
-					{
-						await e.Channel.SendMessage(handler.GetYouTubeLink());
-
-					});
-
-			commands.CreateCommand(listOfCommands[7])
-					.Do(async (e) =>
-					{
-						await e.Channel.SendMessage("Alright, refreshing my memes!");
-						handler.ResetLinks();
-
-					});
-
-
-           
-            client.MessageReceived += async (s, e) => {
-                if (!e.Message.IsAuthor)
+            commands.CreateCommand("Refresh")
+                .Do(async (e) =>
                 {
-                    if (e.Message.Text.Contains("Diablo 3") || e.Message.Text.Contains("diablo 3") || e.Message.Text.Contains("Diablo"))
-                    {
-                        await e.Channel.SendMessage("<:nodiablo:243032600468258817>");
-                    }
-                }
-            };
+                    await e.Channel.SendMessage("Alright, refreshing my memes!");
+                    handler.ResetLinks();
 
+                });
 
-            client.MessageReceived += async (s, e) => {
-                if (!e.Message.IsAuthor)
+            commands.CreateCommand("Shutdown")
+                .Do(async (e) =>
                 {
-                    if (e.Message.Text.Contains("futa"))
+                    if (e.User.Name == "Matih")
                     {
-                        if (rng.Next(1, 7) == 1)
-                        {
-                            var i = rng.Next(0, futaJokes.Length);
-                            await e.Channel.SendMessage(futaJokes[i]);
-
-                        }
+                        await client.Disconnect();
+                        MainClass.ShutDown();
                     }
-                }
-            };
+
+                });
+
+            commands.CreateCommand("Restart")
+                .Do(async (e) =>
+                {
+                    if (e.User.Name == "Matih")
+                    {
+                        await client.Disconnect();
+                        MainClass.Restart();
+                    }
+
+                });
+
 
             client.MessageReceived += async (s, e) => {
                 if (!e.Message.IsAuthor)
                 {
-                    if (rng.Next(1, 50) == 1)
+                    if (rng.Next(1, 60) == 1)
                     {
-                        var i = rng.Next(0, sillyStuff.Length);
-                        await e.Channel.SendMessage(sillyStuff[i]);
+                        var i = rng.Next(0, data.sillyStuff.Length);
+                        await e.Channel.SendMessage(data.sillyStuff[i]);
                     }
                 }
             };
+
+            #endregion
 
 
             client.ExecuteAndWait(async () =>
@@ -204,15 +139,115 @@ namespace HaurchefantBot
 			});
 
 
-
-
 		}
+
+
+
+
+
+
 
 		private void Log(object sender, LogMessageEventArgs e)
 		{
 			Console.WriteLine(e.Message);
 		}
 
-	}
+
+
+
+        void RegisterTriggerMessage(String word, bool RNG = false)
+        {
+            if (RNG)
+            {
+                client.MessageReceived += async (s, e) =>
+                {
+                    if (!e.Message.IsAuthor)
+                    {
+                        if (e.Message.Text.Contains(word))
+                        {
+                            if (rng.Next(0, 8) == 8)
+                            {
+                                await e.Channel.SendMessage(TriggerWords[word][rng.Next(0, TriggerWords[word].Length)]);
+                            }
+                        }
+                    }
+                };
+            }
+            else {
+                client.MessageReceived += async (s, e) =>
+                {
+                    if (!e.Message.IsAuthor)
+                    {
+                        if (e.Message.Text.Contains(word))
+                        {
+                            await e.Channel.SendMessage(TriggerWords[word][rng.Next(0, TriggerWords[word].Length)]); 
+                        }
+                    }
+                };
+            }
+
+            
+        }
+
+
+
+
+
+        void RegisterMemeCommand(String command) {
+
+            commands.CreateCommand(command)
+                    .Do(async (e) =>
+                    {
+                        await e.Channel.SendMessage(handler.GetYouTubeLink());
+                    });
+        }
+
+
+
+        void RegisterStringCommand(String command)
+        {
+
+            String reply = SimpleReply[command];
+
+            commands.CreateCommand(command)
+                    .Do(async (e) =>
+                    {
+                        await e.Channel.SendMessage(reply);
+            });
+        }
+
+
+
+
+
+        void RegisterRandomReplyCommand(String command, randomtype type) {
+
+            if (type == randomtype.Text)
+            {
+                commands.CreateCommand(command)
+                    .Do(async (e) =>
+                    {
+                        await e.Channel.SendMessage(RandomReply[command][rng.Next(0, RandomReply[command].Length)]);
+                    });
+            }
+
+            if (type == randomtype.Image)
+            {
+                commands.CreateCommand(command)
+                    .Do(async (e) =>
+                    {
+                        await e.Channel.SendMessage("I know.");
+                        await e.Channel.SendFile(Directory.GetCurrentDirectory() + "/images/" + RandomReply[command][rng.Next(0, RandomReply[command].Length)]);
+                    });
+            }
+            
+
+        }
+
+
+
+
+     
+    }
 
 }
