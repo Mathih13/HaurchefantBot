@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 namespace HaurchefantBot
@@ -11,6 +12,7 @@ namespace HaurchefantBot
 
 		public static void Main(string[] args)
 		{
+
             Thread th = Thread.CurrentThread;
             th.Name = "Main";
 			Console.WriteLine("Updating reddit json...");

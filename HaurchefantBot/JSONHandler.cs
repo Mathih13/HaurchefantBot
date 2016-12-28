@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
@@ -53,6 +54,26 @@ namespace HaurchefantBot
 		public void ResetLinks() {
 			UpdateRedditInfo();
 			lastPostedLinks.Clear();
+		}
+
+
+		public void SaveJsonAsTxt(Object objectToBeSerialized) {
+			String output = JsonConvert.SerializeObject(objectToBeSerialized);
+
+			System.IO.File.WriteAllText(Directory.GetCurrentDirectory() + "/botConfig.txt", output);
+		}
+
+		/// <summary>
+		/// Deserializes the config class from json txt file.
+		/// </summary>
+		/// <returns>The object from json.</returns>
+		/// <param name="path">Path to the txt file.</param>
+		/// <typeparam name="T">The type of object to be deserialized.</typeparam>
+		public T DeserializeConfigFromJson<T>(String path) {
+			string json = System.IO.File.ReadAllText(path);
+
+			return JsonConvert.DeserializeObject<T>(json);
+
 		}
 
 	}

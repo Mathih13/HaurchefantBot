@@ -14,6 +14,7 @@ namespace HaurchefantBot
         public String[] futaJokes { get; protected set; }
         public String[] sillyStuff { get; protected set; }
         public String[] noDiablo;
+		public String[] fuckOff;
 
 
         public String helpText { get; protected set; }
@@ -72,6 +73,15 @@ namespace HaurchefantBot
 				"Tbh, I like face 4 MaleRa..."
 
             };
+
+			fuckOff = new String[] {
+				"<:peep:236234509253607425>",
+				":(",
+				"Aww..",
+				"Duel me!",
+				"B-but.."
+
+			};
                 
         }
 

@@ -1,10 +1,12 @@
 ﻿<Properties StartupConfiguration="{14ECF3FD-D1F0-4C71-8B5D-8612DC6CC817}|Default">
   <MonoDevelop.Ide.ItemProperties.HaurchefantBot PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HaurchefantBot/JSONHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HaurchefantBot/Program.cs">
     <Files>
-      <File FileName="HaurchefantBot/Program.cs" Line="13" Column="4" />
-      <File FileName="HaurchefantBot/HaurchefantBot.cs" Line="23" Column="4" />
-      <File FileName="HaurchefantBot/JSONHandler.cs" Line="41" Column="8" />
+      <File FileName="HaurchefantBot/Program.cs" Line="22" Column="31" />
+      <File FileName="HaurchefantBot/HaurchefantBot.cs" Line="35" Column="116" />
+      <File FileName="HaurchefantBot/JSONHandler.cs" Line="76" Column="4" />
+      <File FileName="HaurchefantBot/HaurchefantConfig.cs" Line="8" Column="32" />
+      <File FileName="HaurchefantBot/HaurchefantData.cs" Line="80" Column="13" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />

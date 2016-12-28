@@ -11,3 +11,4 @@
 /Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Release/Discord.Net.Commands.dll
 /Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Release/Discord.Net.Modules.dll
 /Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Release/Discord.Net.Audio.dll
+/Users/mathiashartveit1/Projects/HaurchefantBot/HaurchefantBot/bin/Release/HaurchefantBot.exe.config

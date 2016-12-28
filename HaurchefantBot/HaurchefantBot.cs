@@ -16,8 +16,10 @@ namespace HaurchefantBot
         Dictionary<String, String[]> RandomReply;
         Dictionary<String, String[]> TriggerWords;
 
+		HaurchefantConfig config;
         HaurchefantData data;
         JSONHandler handler;
+
 
         enum randomtype { Text, Image };
 
@@ -30,11 +32,8 @@ namespace HaurchefantBot
 
             rng = new Random();
             data = new HaurchefantData();
+			config = handler.DeserializeConfigFromJson<HaurchefantConfig>(Directory.GetCurrentDirectory() + "/botConfig.txt");
 
-            /*   listOfCommands = new String[] {
-                  "Hello", "How are you?", "You're so beautiful", "Help", "Do you love me?", "Commands", "dank meme", "update your links"
-              };
-              */
 
             RandomReply.Add("How are you?", data.quips);
             RandomReply.Add("You're so beautiful", data.images);
@@ -118,11 +117,68 @@ namespace HaurchefantBot
 
                 });
 
+		
+			commands.CreateCommand("Decrease talking")
+				.Do(async (e) =>
+				{
+					await e.Channel.SendIsTyping();
+					config.randomResponseChance += 10;
+					SaveConfig();
+					await e.Channel.SendMessage("10% Less likely to react to random messages.");
+
+				});
+
+
+			commands.CreateCommand("Increase talking")
+				.Do(async (e) =>
+				{
+					await e.Channel.SendIsTyping();
+					config.randomResponseChance -= 10;
+					SaveConfig();
+					await e.Channel.SendMessage("10% More likely to react to random messages.");
+
+				});
+
+			commands.CreateCommand("Increase trigger response")
+				.Do(async (e) =>
+				{
+					await e.Channel.SendIsTyping();
+					config.randomResponseChance -= 1;
+					SaveConfig();
+					await e.Channel.SendMessage("10% More likely to react to specific triggers.");
+
+				});
+
+			commands.CreateCommand("Decrease trigger response")
+				.Do(async (e) =>
+				{
+					await e.Channel.SendIsTyping();
+					config.randomResponseChance -= 1;
+					SaveConfig();
+					await e.Channel.SendMessage("10% Less  likely to react to specific triggers.");
+
+				});
+
+
+
+			client.MessageReceived += async (s, e) =>
+				{
+					if (!e.Message.IsAuthor)
+					{
+						if (e.Message.Text.Contains("fuck off haurch") || e.Message.Text.Contains("shut the fuck up"))
+						{
+							await e.Channel.SendMessage(data.fuckOff[rng.Next(0, data.fuckOff.Length)]);
+						}
+					}
+				};
+
+
+
 
             client.MessageReceived += async (s, e) => {
                 if (!e.Message.IsAuthor)
                 {
-                    if (rng.Next(1, 60) == 1)
+					if (rng.Next(0, config.randomResponseChance) == config.randomResponseChance)
                     {
                         var i = rng.Next(0, data.sillyStuff.Length);
                         await e.Channel.SendMessage(data.sillyStuff[i]);
@@ -165,7 +221,7 @@ namespace HaurchefantBot
                     {
                         if (e.Message.Text.Contains(word))
                         {
-                            if (rng.Next(0, 8) == 8)
+							if (rng.Next(0, config.triggerWordChance) == config.triggerWordChance)
                             {
                                 await e.Channel.SendMessage(TriggerWords[word][rng.Next(0, TriggerWords[word].Length)]);
                             }
@@ -245,7 +301,9 @@ namespace HaurchefantBot
         }
 
 
-
+		void SaveConfig() {
+			handler.SaveJsonAsTxt(config);
+		}
 
      
     }

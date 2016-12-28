@@ -1,0 +1,1 @@
+{"randomResponseChance”:60,”triggerWordChance”:8}
